@@ -6,15 +6,16 @@ fn main() {
 #[derive(Debug, PartialEq, Eq)]
 enum Symbols {
     Variable(String),
-    Constanct(usize),
+    Constant(usize),
     Operator(Operations),
 }
 #[derive(Debug, PartialEq, Eq)]
 enum Operations {
-    Add,
+    Add ,
     Subtract,
     Multiply,
     Divide,
+    Power,
 }
 
 struct RCAS {
@@ -28,10 +29,18 @@ impl RCAS {
             panic!("No function")
         }
 
-        let bytes = phrase.split_whitespace();
+        let bytes = phrase.chars().filter(|x| x.is_whitespace());
 
-        for b in bytes {
+        for b in bytes.clone() {
             println!("{}", b);
+        }
+
+        let mut sys = vec![];
+
+        for b in bytes{
+            if b.is_numeric(){
+                sys.push(Symbols::Constant(b as usize))
+            }
         }
 
         Self {
